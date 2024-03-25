@@ -19,6 +19,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import DisplayArticles from "./pages/DisplayArticles";
+import UpdateArticle from "./pages/UpdateArticle";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -56,6 +57,14 @@ function App() {
               element: (
                 <ProtectedRoute>
                   <CreateArticle />
+                </ProtectedRoute>
+              ),
+            },
+            {
+              path: "update-article/:uniqueId",
+              element: (
+                <ProtectedRoute>
+                  <UpdateArticle />
                 </ProtectedRoute>
               ),
             },

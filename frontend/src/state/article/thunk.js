@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const fetchArticles = createAsyncThunk(
-  "articles/fetchArticles",
+  "articleState/fetchArticles",
   async (_, { rejectWithValue }) => {
     let options = {
       headers: {
@@ -19,7 +19,7 @@ export const fetchArticles = createAsyncThunk(
 );
 
 export const deleteArticles = createAsyncThunk(
-  "artilces/deleteArticles",
+  "articleState/deleteArticles",
   async (articleId, { rejectWithValue }) => {
     let options = {
       headers: {
@@ -44,7 +44,7 @@ export const deleteArticles = createAsyncThunk(
 );
 
 export const createArticle = createAsyncThunk(
-  "articles/createArticle",
+  "articleState/createArticle",
   async (payload, thunkApi) => {
     let options = {
       headers: {
@@ -52,10 +52,32 @@ export const createArticle = createAsyncThunk(
       },
     };
     try {
-      const resp = await axios.post("http://127.0.0.1:8000/article/", payload, options);  
-      if(resp.status != '201'){
-        throw thunkApi.rejectWithValue("Something went wrong!")
-      }
+      const resp = await axios.post(
+        "http://127.0.0.1:8000/article/",
+        payload,
+        options
+      );
+      return resp.data;
+    } catch (error) {
+      throw thunkApi.rejectWithValue(error);
+    }
+  }
+);
+
+export const updateArticle = createAsyncThunk(
+  "articleState/updateArticle",
+  async (payload, thunkApi) => {
+    let options = {
+      headers: {
+        Authorization: "JWT " + localStorage.getItem("access_token"),
+      },
+    };
+    try {
+      const resp = await axios.patch(
+        `http://127.0.0.1:8000/article/${payload.id}`,
+        payload,
+        options
+      );
       return resp.data;
     } catch (error) {
       throw thunkApi.rejectWithValue(error);
