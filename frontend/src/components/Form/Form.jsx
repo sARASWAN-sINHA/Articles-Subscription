@@ -78,6 +78,7 @@ function Form(props) {
                   id={checkBox.id}
                   type="checkbox"
                   value={checkBox.value}
+                  onClick={checkBox.clickHandler}
                 />
                 <label
                   htmlFor={checkBox.id}

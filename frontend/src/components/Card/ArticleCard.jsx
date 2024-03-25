@@ -30,8 +30,6 @@ const Articles = ({ id, user, title, content, createdAt, articleType }) => {
                     success: "Article Deleted!",
                     error: "Failed to delete article"
                   }
-
-
                 )
               }}>
                 DELETE ARTICLE

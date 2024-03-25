@@ -35,16 +35,17 @@ const LoginForm = (props) => {
 
     checkPayload() ?
       toast.promise(
-        //generate token for user 
+        
         axios
-          .post("http://127.0.0.1:8000/auth/jwt/create", loginPayload)
+          .post("http://127.0.0.1:8000/auth/jwt/create", loginPayload) //generate token for user 
           .then(jwtTokenData => {
 
             saveTokenInLocalStorage(jwtTokenData.data);
             const { access, refresh } = jwtTokenData.data;
+            
+            // get user details
             let userId = jwtDecode(access).user_id;
 
-            // get user details
             let options = { headers: { 'Authorization': "JWT " + access } }
             axios
               .get(`http://127.0.0.1:8000/auth/users/${userId}`, options)

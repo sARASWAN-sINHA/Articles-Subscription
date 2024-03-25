@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { deleteArticles, fetchArticles } from "./thunk";
+import { createArticle, deleteArticles, fetchArticles } from "./thunk";
 
 const initialState = {
   isLoading: false,
@@ -11,6 +11,9 @@ const articleSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    /**
+     * Fetch articles.
+     */
     builder
       .addCase(fetchArticles.pending, (state) => {
         state.isLoading = true;
@@ -22,9 +25,11 @@ const articleSlice = createSlice({
 
       .addCase(fetchArticles.rejected, (state, action) => {
         state.isLoading = false;
-        const { error } = action.payload;
       });
 
+    /**
+     * Delete article.
+     */
     builder
       .addCase(deleteArticles.pending, (state) => {
         state.isLoading = true;
@@ -36,7 +41,21 @@ const articleSlice = createSlice({
       })
       .addCase(deleteArticles.rejected, (state, action) => {
         state.isLoading = false;
-        const { error } = action.payload;
+      });
+
+    /**
+     * Create article.
+     */
+    builder
+      .addCase(createArticle.pending, (state) => {
+        state.isLoading = true;
+      })
+
+      .addCase(createArticle.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(createArticle.rejected, (state) => {
+        state.isLoading = false;
       });
   },
 });
