@@ -20,7 +20,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
         if self.action in {"update", "partial_update", "destroy"}:
             permission_classes += [IsAuthenticated , IsArticleAuthor]
 
-        elif self.action == {"list", "retrieve"}:
+        elif self.action in {"list", "retrieve"}:
             permission_classes += [IsAuthenticated]
 
         return [permission() for permission in permission_classes]

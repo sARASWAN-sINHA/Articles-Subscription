@@ -29,7 +29,7 @@ class Article(BaseModel):
                                     db_column   =   "title"
                                 )
     
-    content     = models.TextField(max_length   = 500)
+    content     = models.TextField(max_length   = 1500)
     
     is_premium  = models.BooleanField(
                                         default         =   False,
