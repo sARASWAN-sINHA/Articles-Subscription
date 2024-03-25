@@ -7,16 +7,17 @@ import { CustomToastContainer } from "../components/Toastr";
 import { fetchArticles } from "../state/article/thunk";
 
 import ArticleCard from "../components/Card/ArticleCard";
+import DashboardCard from "../components/Card/DashboardCard";
 
 const DisplayArticles = (props) => {
 
-  const { isLoading, articles } = useSelector(state => state.articles)
+  const { isLoading, articles } = useSelector(state => state.articleState)
   const [loggedInUser, _] = useContext(userContext);
   const dispatch = useDispatch();
 
   useEffect(() => {
     toast.promise(
-      dispatch(fetchArticles()) ,
+      dispatch(fetchArticles()),
       {
         success: "Articles fetched succesfully!",
         pending: "Fetching related records...",
@@ -28,9 +29,9 @@ const DisplayArticles = (props) => {
   return (
     <>
       <CustomToastContainer />
-      <div className="flex flex-col justify-center items-center gap-3">
+      <div className="flex flex-col justify-center items-center gap-3 mt-2">
         {
-          articles.map((article) =>
+          articles.length ? articles.map((article) =>
             <ArticleCard
               key={article.article_uuid}
               id={article.id}
@@ -39,8 +40,16 @@ const DisplayArticles = (props) => {
               articleType={article.is_premium ? "premium" : "standard"}
               user={loggedInUser}
               createdAt={article.created_at.replaceAll('-', '/')}
+              updated_at={article.updated_at}
+              uuid={article.article_uuid}
             />
-          )
+          ) :
+            <DashboardCard
+              title={"no articles!"}
+              message={"We do not have any articles that you might have written! \
+                      Go to 'CREATE ARTICLES' get started!!"
+              }
+            />
         }
       </div>
     </>
