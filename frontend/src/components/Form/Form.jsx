@@ -30,8 +30,8 @@ function Form(props) {
               <label
                 htmlFor={labelInfo.labelName.toLowerCase()}
                 className={`block mb-2 text-base font-medium text-gray-500 ${labelInfo.required
-                    ? "after:content-['*'] after:ml-0.5 after:text-red-500"
-                    : ""
+                  ? "after:content-['*'] after:ml-0.5 after:text-red-500"
+                  : ""
                   }`}
               >
                 {labelInfo.labelName}
@@ -77,6 +77,7 @@ function Form(props) {
                 <input
                   id={checkBox.id}
                   type="checkbox"
+                  defaultChecked={checkBox.value}
                   value={checkBox.value}
                   onClick={checkBox.clickHandler}
                 />
