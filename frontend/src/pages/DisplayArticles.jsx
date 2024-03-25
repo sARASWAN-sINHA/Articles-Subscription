@@ -46,8 +46,8 @@ const DisplayArticles = (props) => {
           ) :
             <DashboardCard
               title={"no articles!"}
-              message={"We do not have any articles that you might have written! \
-                      Go to 'CREATE ARTICLES' get started!!"
+              message={"We do not have any article that you might have written! \
+                      Go to 'CREATE ARTICLES' to get started!!"
               }
             />
         }
