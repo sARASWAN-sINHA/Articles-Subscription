@@ -19,6 +19,7 @@ export const CustomToastContainer = ({ message }) => {
   );
 };
 
-export const generateErrorToastr = (message) => {
-  return toast.error(message);
-};
+export const generateErrorToastr   = message => toast.error(message);
+export const generateSuccessToastr = message => toast.success(message);
+
+
