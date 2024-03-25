@@ -3,7 +3,7 @@ import articleReducer from "./state/article/slice";
 
  const store = configureStore({
   reducer: {
-    articles: articleReducer,
+    articleState: articleReducer,
   },
 });
 export default store;
