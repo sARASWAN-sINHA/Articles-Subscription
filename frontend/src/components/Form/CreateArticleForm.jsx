@@ -51,7 +51,6 @@ const CreateArticleForm = () => {
           navigate("/writer/show-articles/me")
         }
         else {
-          console.log(result.payload.response.data)
           result.payload.response.data.content.map(errorMessage => {
             generateErrorToastr(errorMessage);
           })
@@ -61,8 +60,6 @@ const CreateArticleForm = () => {
 
   return (
     <>
-
-
       <CustomToastContainer />
       <div className="flex justify-center items-center">
         <Form
