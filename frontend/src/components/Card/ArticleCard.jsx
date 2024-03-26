@@ -16,7 +16,7 @@ const ArticleCard = (props) => {
         <h1 className="text-2xl">{title.toUpperCase()}</h1>
         <div className="flex flex-col items-center justify-center w-full gap-2">
           <div className="text-gray-500 py-0 px-2.5 h-full w-3/4 text-center">
-            <div className="text-justify my-2">{content}</div>
+            <div className="text-justify my-2 whitespace-pre-wrap">{content}</div>
             <div className="text-left">{createdAt.substring(0, 10)}</div>
             <div className="text-left my-2">{articleType.toUpperCase()}</div>
           </div>
