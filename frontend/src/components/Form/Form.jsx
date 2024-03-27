@@ -29,14 +29,15 @@ function Form(props) {
             <div className="p-2" key={i}>
               <label
                 htmlFor={labelInfo.labelName.toLowerCase()}
-                className={`block mb-2 text-base font-medium text-gray-500 ${labelInfo.required
-                  ? "after:content-['*'] after:ml-0.5 after:text-red-500"
-                  : ""
-                  }`}
+                className={`block mb-2 text-base font-medium text-gray-500 ${
+                  labelInfo.required
+                    ? "after:content-['*'] after:ml-0.5 after:text-red-500"
+                    : ""
+                }`}
               >
                 {labelInfo.labelName}
               </label>
-              {labelInfo.inputType != 'textarea' ?
+              {labelInfo.inputType != "textarea" ? (
                 <input
                   className={`w-full p-4 border-2 bg-gray-100 text-gray-500 border-gray-400 focus:border-4 focus:border-gray-400 invalid:border-pink-500 invalid:text-pink-600
                 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 `}
@@ -45,16 +46,16 @@ function Form(props) {
                   placeholder={labelInfo.placeholder}
                   value={labelInfo.value}
                   onChange={(e) => labelInfo.changeHandler(e)}
-                /> :
+                />
+              ) : (
                 <textarea
                   className={`w-full p-4 border-2 bg-gray-100 text-gray-500 border-gray-400 focus:border-4 focus:border-gray-400 invalid:border-pink-500 invalid:text-pink-600  focus:invalid:border-pink-500 focus:invalid:ring-pink-500 `}
-
                   aria-describedby="helper-text-explanation"
                   placeholder={labelInfo.placeholder}
                   value={labelInfo.value}
                   onChange={(e) => labelInfo.changeHandler(e)}
                 />
-              }
+              )}
 
               {labelInfo.hintInfo && (
                 <ul id="helper-text-explanation">
