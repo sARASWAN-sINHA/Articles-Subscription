@@ -40,9 +40,12 @@ const UpdateArticleForm = ({ article }) => {
                 }
                 else {
                     generateErrorToastr("Updation Failed!")
-                    result.payload.response.data.content.map(errorMessage => {
-                        generateErrorToastr(errorMessage);
-                    })
+                    const data = { ...result.payload.response.data };
+                    [...Object.keys(data)].map((key) =>
+                        data[key].map((errorMessage) =>
+                            generateErrorToastr(errorMessage)
+                        )
+                    );
                 }
             })
     }
