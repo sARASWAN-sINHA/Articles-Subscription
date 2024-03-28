@@ -17,7 +17,7 @@ export const createUser = createAsyncThunk(
   }
 );
 
-export const updateArticle = createAsyncThunk(
+export const updateUser = createAsyncThunk(
   "userState/updateUser",
   async (payload, thunkApi) => {
     let options = {
@@ -34,6 +34,25 @@ export const updateArticle = createAsyncThunk(
       return res.data;
     } catch (error) {
       throw thunkApi.rejectWithValue(error);
+    }
+  }
+);
+export const getUser = createAsyncThunk(
+  "userState/getUser",
+  async (userId, thunkApi) => {
+    let options = {
+      headers: {
+        Authorization: "JWT " + localStorage.getItem("access_token"),
+      },
+    };
+    try {
+      const res = await axios.get(
+        `http://127.0.0.1:8000/auth/users/${userId}/`,
+        options
+      );
+      return res.data;
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
     }
   }
 );

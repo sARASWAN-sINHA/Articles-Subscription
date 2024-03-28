@@ -1,12 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createUser, updateArticle } from "./thunk";
+import { createUser, getUser, updateUser } from "./thunk";
 
 const initialState = {
   user: {
     id: null,
     email: "",
     first_name: "",
-    last_name: null,
+    last_name: "",
     is_writer: false,
     joined_on: null,
   },
@@ -18,6 +18,9 @@ const userSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    /**
+     * Create user.
+     */
     builder
       .addCase(createUser.pending, (state) => {
         state.isLoading = true;
@@ -30,16 +33,34 @@ const userSlice = createSlice({
         state.isLoading = false;
         state.user = { ...initialState };
       });
+    /**
+     * Update user.
+     */
 
     builder
-      .addCase(updateArticle.pending, (state) => {
+      .addCase(updateUser.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(updateArticle.fulfilled, (state, action) => {
+      .addCase(updateUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = { ...action.payload };
       })
-      .addCase(updateArticle.rejected, (state) => {
+      .addCase(updateUser.rejected, (state) => {
+        state.isLoading = false;
+      });
+
+    /**
+     * Fetch user.
+     */
+    builder
+      .addCase(getUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = { ...action.payload };
+      })
+      .addCase(getUser.rejected, (state) => {
         state.isLoading = false;
       });
   },
