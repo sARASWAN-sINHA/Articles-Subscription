@@ -1,7 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
-
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from "react-toastify";
+import { jwtDecode } from "jwt-decode";
+
+
 import { getUser, updateUser } from "../../state/user/thunk";
 import { CustomToastContainer, generateErrorToastr, generateSuccessToastr } from "../Toastr";
 import Form from "./Form";
@@ -12,8 +14,7 @@ const AccountDetailsForm = () => {
 
   const userReduxState = useSelector(state => state.userState.user);
   const userContextState = useContext(userContext)[0];
-
-  const initialUserState = userReduxState.id == null ? { ...userContextState } : { ...userReduxState }
+  const initialUserState = userReduxState.id != userContextState.id ? { ...userContextState } : { ...userReduxState }
   const [loggedInUser, _] = useState(initialUserState);
   const userId = userContextState.id
 
