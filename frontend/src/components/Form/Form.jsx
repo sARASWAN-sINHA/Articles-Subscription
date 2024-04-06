@@ -1,5 +1,7 @@
 import { NavLink } from "react-router-dom";
+
 import Button from "../Button";
+
 
 function Form(props) {
   const {
@@ -17,7 +19,7 @@ function Form(props) {
   };
   return (
     <div className="bg-white space-x-1 p-8 my-6 h-full w-fit flex flex-col gap-4 rounded-3xl">
-      <h1 className="text-3xl">{headerName.toUpperCase()}</h1>
+      <h1 className="text-3xl">{headerName?.toUpperCase()}</h1>
       <hr />
       <div className="text-gray-500">{headerInfo}</div>
       <form
@@ -28,16 +30,15 @@ function Form(props) {
           return (
             <div className="p-2" key={i}>
               <label
-                htmlFor={labelInfo.labelName.toLowerCase()}
-                className={`block mb-2 text-base font-medium text-gray-500 ${
-                  labelInfo.required
-                    ? "after:content-['*'] after:ml-0.5 after:text-red-500"
-                    : ""
-                }`}
+                htmlFor={labelInfo?.labelName?.toLowerCase()}
+                className={`block mb-2 text-base font-medium text-gray-500 ${labelInfo.required
+                  ? "after:content-['*'] after:ml-0.5 after:text-red-500"
+                  : ""
+                  }`}
               >
-                {labelInfo.labelName}
+                {labelInfo?.labelName}
               </label>
-              {labelInfo.inputType != "textarea" ? (
+              {labelInfo?.inputType != "textarea" ? (
                 <input
                   className={`w-full p-4 border-2 bg-gray-100 text-gray-500 border-gray-400 focus:border-4 focus:border-gray-400 invalid:border-pink-500 invalid:text-pink-600
                 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 `}
@@ -45,7 +46,7 @@ function Form(props) {
                   aria-describedby="helper-text-explanation"
                   placeholder={labelInfo.placeholder}
                   value={labelInfo.value}
-                  onChange={(e) => labelInfo.changeHandler(e)}
+                  onChange={(e) => labelInfo?.changeHandler(e)}
                 />
               ) : (
                 <textarea
@@ -53,13 +54,13 @@ function Form(props) {
                   aria-describedby="helper-text-explanation"
                   placeholder={labelInfo.placeholder}
                   value={labelInfo.value}
-                  onChange={(e) => labelInfo.changeHandler(e)}
+                  onChange={(e) => labelInfo?.changeHandler(e)}
                 />
               )}
 
-              {labelInfo.hintInfo && (
+              {labelInfo?.hintInfo && (
                 <ul id="helper-text-explanation">
-                  {labelInfo.hintInfo.map((hint, i) => {
+                  {labelInfo?.hintInfo?.map((hint, i) => {
                     return (
                       <li key={i} className="text-gray-400">
                         {hint}
@@ -102,9 +103,17 @@ function Form(props) {
       {links?.map((link, i) => {
         return (
           <div key={i} className="flex justify-center ">
-            <NavLink to={link.to} className="underline">
-              {link.linkDesc}
-            </NavLink>
+            {
+              !link.to ?
+                <NavLink onClick={link.clickHandler} className="underline">
+                  {/* {console.log(link.clickHandler)} */}
+                  {link.linkDesc}
+                </NavLink>
+                :
+                <NavLink to={link.to} className="underline">
+                  {link.linkDesc}
+                </NavLink>
+            }
           </div>
         );
       })}

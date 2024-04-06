@@ -8,7 +8,7 @@ export const createUser = createAsyncThunk(
       const res = await axios.post(
         "http://127.0.0.1:8000/auth/users/",
         payload,
-        options
+        // options
       );
       return res.data;
     } catch (error) {
@@ -51,6 +51,24 @@ export const getUser = createAsyncThunk(
         options
       );
       return res.data;
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+  }
+);
+
+export const deleteUser = createAsyncThunk(
+  "userState/deleteUser",
+  async (userPassword, thunkApi) => {
+    try {
+      const res = await axios.delete(
+        "http://127.0.0.1:8000/auth/users/me/", 
+      {
+        data: { current_password: userPassword },
+        headers: { Authorization: "JWT " + localStorage.getItem("access_token")},
+      }
+      );
+      return res;
     } catch (error) {
       return thunkApi.rejectWithValue(error);
     }
