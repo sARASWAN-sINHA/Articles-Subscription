@@ -3,7 +3,7 @@ from django.contrib.auth.models import Group
 
 class CustomUserSerializer(UserSerializer):
     class Meta(UserSerializer.Meta):
-        fields = ('id', 'email', 'first_name', 'last_name', 'is_writer', 'joined_on')
+        fields = ('id', 'email', 'first_name', 'last_name', 'password', 'is_writer', 'joined_on')
         # read_only_fields = ('email', 'first_name', 'last_name', 'is_writer',)
 
 class CustomUserCreateSerializer(UserCreateSerializer):
