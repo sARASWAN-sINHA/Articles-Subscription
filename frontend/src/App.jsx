@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import "./App.css";
 
@@ -12,25 +12,26 @@ import store from "./store";
 
 
 import AccountDetails from "./pages/AccountDetails";
+import BrowseSubscription from "./pages/BrowseSubscription";
 import CreateArticle from "./pages/CreateArticle";
 import ClientDashboard from "./pages/Dashboard/ClientDashboard";
 import WriterDashboard from "./pages/Dashboard/WriterDashboard";
+import DisplayArticles from "./pages/DisplayArticles";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import DisplayArticles from "./pages/DisplayArticles";
 import UpdateArticle from "./pages/UpdateArticle";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState({
-                                                      "id": null,
-                                                      "email": "",
-                                                      "first_name": "",
-                                                      "last_name": null,
-                                                      "is_writer": false,
-                                                      "joined_on": null
-                                                  });
+    "id": null,
+    "email": "",
+    "first_name": "",
+    "last_name": "",
+    "is_writer": false,
+    "joined_on": null
+  });
 
   const routes = createBrowserRouter([
     {
@@ -113,6 +114,14 @@ function App() {
                 </ProtectedRoute>
               ),
             },
+            {
+              path: "account/browse-subscription",
+              element: (
+                <ProtectedRoute>
+                 <BrowseSubscription />
+                </ProtectedRoute>
+              ),
+            },
           ],
         },
       ],
@@ -131,7 +140,7 @@ function App() {
       <authContext.Provider value={[isLoggedIn, setIsLoggedIn]}>
         <userContext.Provider value={[loggedInUser, setLoggedInUser]}>
           <Provider store={store} >
-          <RouterProvider router={routes} />
+            <RouterProvider router={routes} />
           </Provider>
         </userContext.Provider>
       </authContext.Provider>

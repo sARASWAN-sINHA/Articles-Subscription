@@ -96,7 +96,7 @@ const LoginForm = (props) => {
           ]}
           buttonInfo={{
             text: "login",
-            linkTo: "/writer/dashboard",
+            // linkTo: "/writer/dashboard",
             type: "submit",
           }}
           links={[
