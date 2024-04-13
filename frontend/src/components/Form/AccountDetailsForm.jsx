@@ -14,6 +14,7 @@ const AccountDetailsForm = () => {
 
   const userReduxState = useSelector(state => state.userState.user);
   const userContextState = useContext(userContext)[0];
+  const updateUserContext = useContext(userContext)[1];
   const initialUserState = userReduxState.id != userContextState.id ? { ...userContextState } : { ...userReduxState }
   const [loggedInUser, _] = useState(initialUserState);
   const userId = userContextState.id
@@ -61,8 +62,11 @@ const AccountDetailsForm = () => {
       }
     )
       .then(result => {
-        if (!result.error)
+        if (!result.error) {
+          updateUserContext(userReduxState);
           generateSuccessToastr("Account details successfully updated!");
+
+        }
         else {
           const data = { ...result.payload.response.data };
           [...Object.keys(data)].map((key) => generateErrorToastr(data[key]));
