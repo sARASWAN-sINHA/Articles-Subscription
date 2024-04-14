@@ -5,7 +5,7 @@ const SubscriptionCard = (props) => {
 
     const standardSubscriptionTypeMessageArray = ["Join us for standard access here", "Limited article access"];
     const premiumSubscriptionTypeMessageArray = ["Elevate your experience with premium here", "Full article access"];
-    const { subscriptionType } = props;
+    const { subscriptionType, amount } = props;
     const subscriptionTypeMessageArray = subscriptionType.toLowerCase() === 'standard' ? [...standardSubscriptionTypeMessageArray] : [...premiumSubscriptionTypeMessageArray];
     return (
         <div className='bg-white p-5 rounded-2xl flex flex-col gap-3 justify-center align-middle w-1/3' >
@@ -15,7 +15,7 @@ const SubscriptionCard = (props) => {
             <div className='text-center m-2'>({subscriptionTypeMessageArray[1]})</div>
             <hr />
             <div className="w-full flex justify-center align-middle ">
-                <Payment/>
+                <Payment amount={amount} />
             </div>
         </div>
     )

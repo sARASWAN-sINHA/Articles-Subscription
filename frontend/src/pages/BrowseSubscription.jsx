@@ -10,8 +10,8 @@ const BrowseSubscription = () => {
                 </div>
             </div>
             <div className='flex flex-1 justify-around '>
-                <SubscriptionCard subscriptionType={"standard"} />
-                <SubscriptionCard subscriptionType={"premium"} />
+                <SubscriptionCard subscriptionType={"standard"} amount={"500"}/>
+                <SubscriptionCard subscriptionType={"premium"} amount={"650"}/>
             </div>
         </div>
     )
