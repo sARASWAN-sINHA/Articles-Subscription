@@ -6,7 +6,15 @@ from rest_framework import serializers
 from .models import Subscription
 
 
+class SubscriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subscription
+        fields = ["type", "cost", "is_active", "subscriber"]
+
+
 class CustomUserSerializer(UserSerializer):
+    subscription = SubscriptionSerializer(read_only=True)
+
     class Meta(UserSerializer.Meta):
         fields = (
             "id",
@@ -16,8 +24,18 @@ class CustomUserSerializer(UserSerializer):
             "password",
             "is_writer",
             "joined_on",
+            "subscription",
         )
         # read_only_fields = ('email', 'first_name', 'last_name', 'is_writer',)
+
+    def to_representation(self, instance):
+
+        user = super().to_representation(instance)
+        user_subscription = user.get("subscription", None)
+        if user_subscription:
+            user_subscription.pop("cost")
+            user_subscription.pop("subscriber")
+        return user
 
 
 class CustomUserCreateSerializer(UserCreateSerializer):
@@ -47,9 +65,3 @@ class CustomUserCreateSerializer(UserCreateSerializer):
         extra_kwargs = {
             "last_name": {"required": False, "allow_null": True},
         }
-
-
-class SubscriptionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Subscription
-        fields = ["type", "cost", "is_active", "subscriber"]

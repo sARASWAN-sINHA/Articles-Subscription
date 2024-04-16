@@ -53,9 +53,6 @@ const Payment = (props) => {
                   }) :
                     "";
                 })
-              alert(response.razorpay_payment_id);
-              alert(response.razorpay_order_id);
-              alert(response.razorpay_signature);
             },
             prefill: {
               name: loggedInUser.first_name + " " + loggedInUser.last_name,
