@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from datetime import timedelta
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     #APPS
     'account',
     'article',
+    'payment',
 
     #3RD PARTY LIBRARIES
     'rest_framework',
@@ -52,6 +54,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'drf_yasg',
     'drf_spectacular',
+    
 ]
 
 MIDDLEWARE = [
@@ -175,3 +178,7 @@ CORS_ALLOWED_ORIGINS = [
    'http://localhost:5173',
   
 ]
+
+
+RAZORPAY_KEY_ID = os.environ.get("RAZORPAY_KEY_ID")
+RAZORPAY_KEY_SECRET = os.environ.get("RAZORPAY_KEY_SECRET")

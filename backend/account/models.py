@@ -23,3 +23,18 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD  = 'email'
     REQUIRED_FIELDS = [] #for superuser creation only; not regular user
+
+
+class Subscription(models.Model):
+    class SubscriptionTypes(models.TextChoices):
+        NONE     = "None"   , "None"
+        STANDARD = "STD"    , "Standard"
+        PREMIUM  = "PRM"    , "Premium"
+    
+    type = models.CharField(max_length=100, db_column="type", choices=SubscriptionTypes)
+    cost = models.FloatField(db_column="cost")
+    is_active = models.BooleanField(default=False)
+    subscriber = models.OneToOneField(to=CustomUser, related_name="subscription", on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return f'{self.subscriber.first_name + " " + self.subscriber.last_name} - {self.type}'
