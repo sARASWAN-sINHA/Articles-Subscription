@@ -40,6 +40,7 @@ function Form(props) {
               </label>
               {labelInfo?.inputType != "textarea" ? (
                 <input
+                  readOnly={labelInfo.readOnlyFlag}
                   className={`w-full p-4 border-2 bg-gray-100 text-gray-500 border-gray-400 focus:border-4 focus:border-gray-400 invalid:border-pink-500 invalid:text-pink-600
                 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 `}
                   type={labelInfo.inputType}

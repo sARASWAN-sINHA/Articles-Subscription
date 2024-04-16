@@ -11,7 +11,7 @@ const ClientDashboard = () => {
 
   const userSubscription = loggedInUser.subscription;
   const subscriptionMessage = userSubscription ?
-    userSubscription == "STD" ? "Standard" : "Premium"
+    userSubscription.type == "STD" ? "Standard" : "Premium"
     : "None";
 
   return (

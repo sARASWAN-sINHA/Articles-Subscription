@@ -30,7 +30,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
             try:
                 if user.subscription.type == "STD":
                     return Article.objects.filter(is_premium=False)
-                Article.objects.filter(is_premium=True)
+                return Article.objects.all()
             except Exception as e:
                 return Article.objects.none()
         return Article.objects.filter(writer=user.id)

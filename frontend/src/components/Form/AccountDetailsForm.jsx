@@ -87,6 +87,7 @@ const AccountDetailsForm = () => {
               labelName: "Email",
               inputType: "email",
               placeholder: "john.doe@example.com",
+              readOnlyFlag: true,
               required: true,
               changeHandler: handleEmailChange,
               value: payload.email

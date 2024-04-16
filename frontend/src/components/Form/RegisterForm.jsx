@@ -11,6 +11,11 @@ import {
 } from "../Toastr";
 import { useNavigate } from "react-router-dom";
 
+
+import writeArticleBackgroundVideo from "../../assets/writeArticle.mp4"
+import VideoBackground from "../VideoBackground";
+
+
 const RegisterForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -24,21 +29,21 @@ const RegisterForm = () => {
   };
 
   const errorMap = {
-    "FieldMissing"    : "Please fill out the required fields! (Marked with *)",
-    "PasswordError"   : "Your password must contain atleast 8 characters and cannot be entirely numeric.",
+    "FieldMissing": "Please fill out the required fields! (Marked with *)",
+    "PasswordError": "Your password must contain atleast 8 characters and cannot be entirely numeric.",
     "PasswordMismatch": "Passwords do not match!!"
   }
 
   const [payload, setPayload] = useState(initialPayload);
   const [passwordConfirmationText, setPasswordConfirmationText] = useState("");
-  
-  const handleEmailChange     = (e)     => setPayload({ ...payload, email: e.target.value });
-  const handleFirstNameChange = (e)     => setPayload({ ...payload, first_name: e.target.value });
-  const handleLastNameChange  = (e)     => setPayload({ ...payload, last_name: e.target.value });
-  const handlePasswordChange  = (e)     => setPayload({ ...payload, password: e.target.value });
-  const handleUserTypeChange  = (e)     => setPayload({ ...payload, is_writer: !payload.is_writer });
+
+  const handleEmailChange = (e) => setPayload({ ...payload, email: e.target.value });
+  const handleFirstNameChange = (e) => setPayload({ ...payload, first_name: e.target.value });
+  const handleLastNameChange = (e) => setPayload({ ...payload, last_name: e.target.value });
+  const handlePasswordChange = (e) => setPayload({ ...payload, password: e.target.value });
+  const handleUserTypeChange = (e) => setPayload({ ...payload, is_writer: !payload.is_writer });
   const handlePasswordConfirmationChange = (e) => setPasswordConfirmationText(e.target.value);
-  
+
 
   const checkPayload = (payload) => {
     let { password, first_name, last_name } = payload;
@@ -79,7 +84,7 @@ const RegisterForm = () => {
   return (
     <>
       <CustomToastContainer />
-      <div className="flex justify-center items-center">
+      <div className="absolute -inset-9 flex justify-center items-center z-10">
         <Form
           headerName="register"
           headerInfo="Start your journey today whether you are a client or a writer."
@@ -147,6 +152,7 @@ const RegisterForm = () => {
           onSubmitFunction={handleSubmit}
         />
       </div>
+      <VideoBackground backgroundVideo={writeArticleBackgroundVideo} />
     </>
   );
 };

@@ -6,7 +6,7 @@ function AppNavbar() {
   const [_, setIsLoggedIn] = useContext(authContext);
   const [user, ...extraData] = useContext(userContext);
   return (
-    <div className="bg-white flex w-full border-2 border-transparent p-10">
+    <div className="bg-white flex w-full border-2 border-transparent p-10 z-50">
       <Link to={`/${user.is_writer ? "writer" : "client"}/dashboard`} className="w-1/6 ">
         <div className="font-bold text-xl">SARAS-SOCH</div>
       </Link>

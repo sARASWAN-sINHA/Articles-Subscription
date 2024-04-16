@@ -1,14 +1,22 @@
 import axios from "axios";
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from "react-router-dom";
 
 import useRazorpay from "react-razorpay";
+
+import { CustomToastContainer, generateErrorToastr } from "./Toastr";
+import { getUser } from "../state/user/thunk";
 
 const Payment = (props) => {
 
   const { amount } = props;
   const loggedInUser = useSelector(state => state.userState.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [Razorpay] = useRazorpay();
+
 
   const handlePayment = () => {
     const payload = {
@@ -53,6 +61,10 @@ const Payment = (props) => {
                   }) :
                     "";
                 })
+                .then(navigate("/client/account/me"))
+                .then(navigate("/client/browse-articles"))
+                .catch(error => generateErrorToastr(error.message))
+
             },
             prefill: {
               name: loggedInUser.first_name + " " + loggedInUser.last_name,
@@ -66,13 +78,7 @@ const Payment = (props) => {
           const rzp1 = new Razorpay(options);
 
           rzp1.on("payment.failed", function (response) {
-            alert(response.error.code);
-            alert(response.error.description);
-            alert(response.error.source);
-            alert(response.error.step);
-            alert(response.error.reason);
-            alert(response.error.metadata.order_id);
-            alert(response.error.metadata.payment_id);
+            generateErrorToastr(response.error.description)
           });
 
           rzp1.open();
@@ -82,9 +88,12 @@ const Payment = (props) => {
   }
 
   return (
-    <div className='w-full text-center'>
-      <button type="button" className='bg-yellow-400 p-5 text-center font-bold w-1/3 shadow-xl' onClick={handlePayment}> Pay Rs. {amount} now ! </button>
-    </div>
+    <>
+      <CustomToastContainer />
+      <div className='w-full text-center'>
+        <button type="button" className='bg-yellow-400 p-5 text-center font-bold w-1/3 shadow-xl' onClick={handlePayment}> Pay Rs. {amount} now ! </button>
+      </div>
+    </>
   )
 }
 
