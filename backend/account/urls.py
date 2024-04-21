@@ -1,9 +1,12 @@
-from django.urls import path
+from django.urls import include, path
+from rest_framework.routers import DefaultRouter
 
-from .views import SubscriptionView
+from .views import SubscriptionViewSet
 
+router = DefaultRouter(trailing_slash = False)
+router.register("subscription", SubscriptionViewSet, basename="subscription-api")
 
 urlpatterns = [
-    path("subscription", SubscriptionView.as_view(), name="subscription-api")
+    path("", include(router.urls))
 ]
 
