@@ -14,11 +14,40 @@ class SubscriptionViewSet(mixins.CreateModelMixin, GenericViewSet):
 
     def create(self, request, *args, **kwargs):
         return super().create(request, *args, **kwargs)
+    
+
+    @action(detail=False, methods=["GET"], url_path="user-previous-subscription")
+    def user_previous_subscription(self, request, *args, **kwargs):
+        user = request.user
+        data = None
+        if self.queryset.filter(subscriber=user).exists():
+            data = self.queryset.filter(subscriber=user)
+            serialized_data = self.serializer_class(data, many=True)
+            return Response(
+                {
+                    "message":"Found prevoius subscription.",
+                    "data":serialized_data.data
+                },
+                status=status.HTTP_200_OK
+            )
+        else:
+            return Response(
+                {
+                    "message": "No previous subscription found.",
+                    "data":{}
+                },
+                status=status.HTTP_200_OK
+            )
+
+
+            
+
 
     @action(detail=False, methods=["PATCH"], url_path="deactivate-subscription")
     def deactivate_subscription(self, request, *args, **kwargs):
         subscription = request.user.subscription
         data         = {"is_active": False}
+        request.user.subscription = None
 
         serialized_subscription = self.serializer_class(instance=subscription, data=data, partial=True)
         serialized_subscription.is_valid(raise_exception=True)

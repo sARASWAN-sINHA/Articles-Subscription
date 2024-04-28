@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 
 import useRazorpay from "react-razorpay";
 
-import { CustomToastContainer, generateErrorToastr } from "./Toastr";
-import { getUser } from "../state/user/thunk";
+import { CustomToastContainer, generateErrorToastr } from "../Toastr";
+import { createSubscriptionPayload, createTransactionPayload, createVerificationPayload } from "./paymentApiPayload";
 
 const Payment = (props) => {
 
@@ -38,29 +38,12 @@ const Payment = (props) => {
             order_id: response.data.data.id,
             handler: async function (response) {
 
-              let transactionPayload = {
-                "razorpay_order_id": response.razorpay_order_id,
-                "razorpay_payment_id": response.razorpay_payment_id,
-                "razorpay_signature": response.razorpay_signature,
-                "amount": amount
-              };
+              let transactionPayload = createTransactionPayload(response.razorpay_order_id, response.razorpay_payment_id, response.razorpay_signature, amount);
               await axios.post('http://127.0.0.1:8000/payment/transaction', transactionPayload);
 
-              let verificationPayload = {
-                "razorpay_order_id": response.razorpay_order_id,
-                "razorpay_payment_id": response.razorpay_payment_id,
-                "razorpay_signature": response.razorpay_signature,
-              };
+              let verificationPayload = createVerificationPayload(response.razorpay_order_id, response.razorpay_payment_id, response.razorpay_signature);
               axios.post('http://localhost:8000/payment/transaction/verify_payment', verificationPayload)
-                .then(async response => {
-                  response.data.data ? await axios.post('http://localhost:8000/account/subscription', {
-                    "type": amount == "500" ? "STD" : "PRM",
-                    "cost": amount,
-                    "is_active": true,
-                    "subscriber": loggedInUser.id
-                  }) :
-                    "";
-                })
+                .then(async response => response.data.data ? await axios.post('http://localhost:8000/account/subscription', createSubscriptionPayload(amount, loggedInUser)) :"")
                 .then(navigate("/client/account/me"))
                 .then(navigate("/client/browse-articles"))
                 .catch(error => generateErrorToastr(error.message))
