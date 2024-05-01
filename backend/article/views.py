@@ -28,7 +28,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
         user = self.request.user
         if user.groups.filter(name="Client").exists():
             try:
-                if user.subscription.type == "STD":
+                if user.latest_subscription().type == "STD":
                     return Article.objects.filter(is_premium=False)
                 return Article.objects.all()
             except Exception as e:

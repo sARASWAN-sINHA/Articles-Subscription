@@ -16,46 +16,41 @@ class SubscriptionViewSet(mixins.CreateModelMixin, GenericViewSet):
         return super().create(request, *args, **kwargs)
     
 
-    @action(detail=False, methods=["GET"], url_path="user-previous-subscription")
-    def user_previous_subscription(self, request, *args, **kwargs):
+    @action(detail=False, methods=["GET"], url_path="user-subscription-history")
+    def user_subscription_history(self, request, *args, **kwargs):
         user = request.user
-        data = None
-        if self.queryset.filter(subscriber=user).exists():
-            data = self.queryset.filter(subscriber=user)
-            serialized_data = self.serializer_class(data, many=True)
-            return Response(
+        past_subscription_records = user.subscription_history()
+        serialized_data = self.serializer_class(past_subscription_records, many=True)
+        return Response(
                 {
-                    "message":"Found prevoius subscription.",
-                    "data":serialized_data.data
+                    "message": "Previous subscription data",
+                    "data": serialized_data.data
                 },
                 status=status.HTTP_200_OK
-            )
-        else:
-            return Response(
-                {
-                    "message": "No previous subscription found.",
-                    "data":{}
-                },
-                status=status.HTTP_200_OK
-            )
-
-
-            
-
+        )
+    @action(detail=False, methods=["GET"], url_path="user-lastest-subscription")
+    def user_lastest_subscription(self, request, *args, **kwargs):
+        user = request.user
+        last_subscription = user.latest_subscription()
+        serialized_data = self.serializer_class(last_subscription)
+        return Response(
+            {
+                "message": "Latest scubscription found!",
+                "data":   serialized_data.data,
+            },
+            status=status.HTTP_200_OK
+        )
 
     @action(detail=False, methods=["PATCH"], url_path="deactivate-subscription")
     def deactivate_subscription(self, request, *args, **kwargs):
-        subscription = request.user.subscription
-        data         = {"is_active": False}
-        request.user.subscription = None
-
-        serialized_subscription = self.serializer_class(instance=subscription, data=data, partial=True)
-        serialized_subscription.is_valid(raise_exception=True)
-        serialized_subscription.save()
+        user = request.user
+        deactivated_subscription = user.deactivate_subscription()
+        serialized_data = self.serializer_class(deactivated_subscription)
+        serialized_data.save()
         return Response(
             {
-                "data": serialized_subscription.data,
                 "message": "Subscription de-activated",
+                "data": serialized_data.data,
             },
             status=status.HTTP_200_OK,
         )

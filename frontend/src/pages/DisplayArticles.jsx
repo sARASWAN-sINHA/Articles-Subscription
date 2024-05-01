@@ -21,7 +21,7 @@ const DisplayArticles = (props) => {
   const [loggedInUser, _] = useState(initialUserState);
   const dispatch = useDispatch();
 
-  const userSubscription = loggedInUser.subscription;
+  const userSubscription = loggedInUser.subscription.length == 0 ? null : loggedInUser.subscription[loggedInUser.subscription.length - 1];
 
 
   const noArticleToShow = () => {
@@ -34,7 +34,7 @@ const DisplayArticles = (props) => {
           }
         />
         :
-        userSubscription == null ?
+        (userSubscription == null || userSubscription.is_active == false) ?
           <BrowseSubscriptionForm />
           :
           <DashboardCard
