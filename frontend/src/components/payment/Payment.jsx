@@ -1,32 +1,45 @@
 import axios from "axios";
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 
 import useRazorpay from "react-razorpay";
 
 import { CustomToastContainer, generateErrorToastr } from "../Toastr";
 import { createSubscriptionPayload, createTransactionPayload, createVerificationPayload } from "./paymentApiPayload";
+import { createOrder, createSubscription, createTransaction, verifyPayment } from "./paymentApiCall";
+
+
+
 
 const Payment = (props) => {
 
+  /**
+   * 
+   * Flow for making transactions using Razorpay:-
+   *  1. User places an order by (createOrder) to buy a subscription.
+   *  2. Verification of the payment (verifyPayment) is done on Razorpay's end. (razorpay client gateway creation **)
+   *  3. If verification is successful, subscription (craeteSubscription) is craeted for the user.
+   * 
+   */
+
   const { amount } = props;
   const loggedInUser = useSelector(state => state.userState.user);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [Razorpay] = useRazorpay();
 
 
   const handlePayment = () => {
-    const payload = {
+
+    const createOrderPayload = {
       currency: "INR",
       amount
     };
-    axios.post(
-      'http://127.0.0.1:8000/payment/order',
-      payload
-    )
+
+    let subscriptionPayload = createSubscriptionPayload(amount, loggedInUser);
+
+    createOrder(createOrderPayload)
       .then(
         ((response) => {
 
@@ -39,11 +52,11 @@ const Payment = (props) => {
             handler: async function (response) {
 
               let transactionPayload = createTransactionPayload(response.razorpay_order_id, response.razorpay_payment_id, response.razorpay_signature, amount);
-              await axios.post('http://127.0.0.1:8000/payment/transaction', transactionPayload);
+              await createTransaction(transactionPayload);
 
               let verificationPayload = createVerificationPayload(response.razorpay_order_id, response.razorpay_payment_id, response.razorpay_signature);
-              axios.post('http://localhost:8000/payment/transaction/verify_payment', verificationPayload)
-                .then(async response => response.data.data ? await axios.post('http://localhost:8000/account/subscription', createSubscriptionPayload(amount, loggedInUser)) :"")
+              verifyPayment(verificationPayload)
+                .then(async response => response.data.data ? await createSubscription(subscriptionPayload) : "")
                 .then(navigate("/client/account/me"))
                 .then(navigate("/client/browse-articles"))
                 .catch(error => generateErrorToastr(error.message))
@@ -58,7 +71,7 @@ const Payment = (props) => {
             },
           };
 
-          const rzp1 = new Razorpay(options);
+          const rzp1 = new Razorpay(options); // ** razorpay client creation using the options defined above
 
           rzp1.on("payment.failed", function (response) {
             generateErrorToastr(response.error.description)
