@@ -27,3 +27,7 @@ urlpatterns = [
     path("payment/", include("payment.urls")),
     path("account/", include("account.urls")),
 ]
+admin.site.site_header = "Saras-Soch Admin"
+admin.site.site_title = "Saras-Soch Admin Portal"
+admin.site.index_title = "Welcome to Saras-Soch Admin Portal"
+

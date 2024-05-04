@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.base_user import AbstractBaseUser
 from .managers import CustomUserManager
 from django.contrib.auth.models import PermissionsMixin
+from datetime import timedelta, datetime
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
@@ -43,10 +44,20 @@ class Subscription(models.Model):
         STANDARD = "STD"    , "Standard"
         PREMIUM  = "PRM"    , "Premium"
     
-    type        = models.CharField(max_length=100, db_column="type", choices=SubscriptionTypes)
-    cost        = models.FloatField(db_column="cost")
-    is_active   = models.BooleanField(default=False)
-    subscriber  = models.ForeignKey(to=CustomUser, related_name="subscription", on_delete=models.CASCADE)
+    type            = models.CharField(max_length=100, db_column="type", choices=SubscriptionTypes)
+    cost            = models.FloatField(db_column="cost")
+    subscriber      = models.ForeignKey(to=CustomUser, related_name="subscription", on_delete=models.CASCADE)
+    subscribed_on   = models.DateTimeField(auto_now_add=True, null=True)
+
+    @property
+    def subscribed_to(self):
+        subscribed_to =  self.subscribed_on + timedelta(days=90)
+        return subscribed_to
+    
+    @property
+    def is_active(self):
+        subscribed_to = self.subscribed_on + timedelta(seconds=90)
+        return subscribed_to > timezone.now()
 
     def __str__(self) -> str:
-        return f'{self.subscriber.first_name + " " + self.subscriber.last_name} - {self.type}'
+        return f'{self.subscriber.first_name + " " + self.subscriber.last_name} - {self.type}' 

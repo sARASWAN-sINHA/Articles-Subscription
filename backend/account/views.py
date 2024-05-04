@@ -16,6 +16,13 @@ class SubscriptionViewSet(mixins.CreateModelMixin, GenericViewSet):
         return super().create(request, *args, **kwargs)
     
 
+    '''
+    For future additions:- 
+        1. Create a screen to show users about their previous subscriptions that they had purchased.
+        2. Out of all the  previous subscriptions that a user had purchased, I might want only the last subscription.   
+
+    '''
+
     @action(detail=False, methods=["GET"], url_path="user-subscription-history")
     def user_subscription_history(self, request, *args, **kwargs):
         user = request.user
@@ -41,16 +48,3 @@ class SubscriptionViewSet(mixins.CreateModelMixin, GenericViewSet):
             status=status.HTTP_200_OK
         )
 
-    @action(detail=False, methods=["PATCH"], url_path="deactivate-subscription")
-    def deactivate_subscription(self, request, *args, **kwargs):
-        user = request.user
-        deactivated_subscription = user.deactivate_subscription()
-        serialized_data = self.serializer_class(deactivated_subscription)
-        serialized_data.save()
-        return Response(
-            {
-                "message": "Subscription de-activated",
-                "data": serialized_data.data,
-            },
-            status=status.HTTP_200_OK,
-        )
