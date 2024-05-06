@@ -1,4 +1,4 @@
-import {React, useContext, useState} from "react";
+import { React, useContext, useState } from "react";
 
 import AccountDeletionForm from "../components/Form/AccountDeletionForm";
 import AccountDetailsForm from "../components/Form/AccountDetailsForm";
@@ -14,7 +14,10 @@ const AccountDetails = ({ user }) => {
   return (
     <div className="flex flex-col justify-center items-center">
       <AccountDetailsForm />
-      {user.type === "client" && loggedInUser.subscription?.type==null? <BrowseSubscriptionForm /> : null}
+      {user.type === "client" &&
+        (loggedInUser.subscription.length == 0
+          || loggedInUser.subscription[loggedInUser.subscription.length - 1].is_active == false) ? <BrowseSubscriptionForm />
+        : null}
       <AccountDeletionForm />
     </div>
   );

@@ -26,13 +26,30 @@ class ArticleViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
+
+        # if user is a client
         if user.groups.filter(name="Client").exists():
             try:
-                if user.subscription.type == "STD":
-                    return Article.objects.filter(is_premium=False)
-                return Article.objects.all()
+                user_latest_subscription = user.latest_subscription()
+
+                # if client user has active subscription
+                if user_latest_subscription.is_active:
+
+                    '''
+                        client user's active subscription is of type "Standard" 
+                        then fetch articles which are only of type "Standard" i.e. is_premium=False
+                    '''
+                    if user.latest_subscription().type == "STD":
+                        return Article.objects.filter(is_premium=False)
+                    '''
+                        else user's active subscription is of type "Premium"
+                        Hence return articles of type "Standard" and "Premium", i.e. all articles
+                    '''
+                    return Article.objects.all()
             except Exception as e:
                 return Article.objects.none()
+            
+        # user is a writer, return only those articles written by him/her. 
         return Article.objects.filter(writer=user.id)
 
     def create(self, request, *args, **kwargs):

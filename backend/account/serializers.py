@@ -13,7 +13,7 @@ class SubscriptionSerializer(serializers.ModelSerializer):
 
 
 class CustomUserSerializer(UserSerializer):
-    subscription = SubscriptionSerializer(read_only=True)
+    subscription = SubscriptionSerializer(many=True, read_only=True)
 
     class Meta(UserSerializer.Meta):
         fields = (
@@ -31,8 +31,8 @@ class CustomUserSerializer(UserSerializer):
     def to_representation(self, instance):
 
         user = super().to_representation(instance)
-        user_subscription = user.get("subscription", None)
-        if user_subscription:
+        user_subscriptions = user.get("subscription", None)
+        for user_subscription in user_subscriptions:
             user_subscription.pop("cost")
             user_subscription.pop("subscriber")
         return user
