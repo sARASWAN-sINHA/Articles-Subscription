@@ -56,7 +56,8 @@ class Subscription(models.Model):
     
     @property
     def is_active(self):
-        subscribed_to = self.subscribed_on + timedelta(seconds=90)
+        subscribed_to = self.subscribed_on + timedelta(days=90)
+        print(subscribed_to > timezone.now())
         return subscribed_to > timezone.now()
 
     def __str__(self) -> str:
