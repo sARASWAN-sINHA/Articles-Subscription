@@ -32,12 +32,12 @@ const LoginForm = (props) => {
 
   const handleSubmit = async () => {
     console.log(loginPayload);
-
+    console.log(`${import.meta.env.VITE_BACKEND_IP}/auth/jwt/create`);
     checkPayload() ?
       toast.promise(
         
         axios
-          .post("http://127.0.0.1:8000/auth/jwt/create", loginPayload) //generate token for user 
+          .post(`${import.meta.env.VITE_BACKEND_IP}/auth/jwt/create`, loginPayload) //generate token for user 
           .then(jwtTokenData => {
 
             saveTokenInLocalStorage(jwtTokenData.data);
@@ -48,7 +48,7 @@ const LoginForm = (props) => {
 
             let options = { headers: { 'Authorization': "JWT " + access } }
             axios
-              .get(`http://127.0.0.1:8000/auth/users/${userId}`, options)
+              .get(`${import.meta.env.VITE_BACKEND_IP}/auth/users/${userId}`, options)
               .then(loggedInUserDetails => {
                 console.log(loggedInUserDetails);
                 setLoggedInUser(loggedInUserDetails.data)

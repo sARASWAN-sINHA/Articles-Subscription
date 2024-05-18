@@ -12,6 +12,7 @@ drf-yasg = "*"
 drf-spectacular = "*"
 python-dotenv = "*"
 razorpay = "*"
+django-environ = "*"
 
 [dev-packages]
 
