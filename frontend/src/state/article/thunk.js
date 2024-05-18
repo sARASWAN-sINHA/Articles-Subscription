@@ -10,7 +10,7 @@ export const fetchArticles = createAsyncThunk(
       },
     };
     try {
-      const resp = await axios.get("http://127.0.0.1:8000/article", options);
+      const resp = await axios.get(`${import.meta.env.VITE_BACKEND_IP}/article`, options);
       return resp.data;
     } catch (error) {
       throw rejectWithValue(error);
@@ -28,11 +28,11 @@ export const deleteArticles = createAsyncThunk(
     };
     try {
       const deleteResp = await axios.delete(
-        `http://127.0.0.1:8000/article/${articleId}`,
+        `${import.meta.env.VITE_BACKEND_IP}/article/${articleId}`,
         options
       );
       if (deleteResp.status == "204") {
-        const resp = await axios.get("http://127.0.0.1:8000/article", options);
+        const resp = await axios.get(`${import.meta.env.VITE_BACKEND_IP}/article`, options);
         return resp.data;
       } else {
         throw Error("delete operation failed!");
@@ -53,7 +53,7 @@ export const createArticle = createAsyncThunk(
     };
     try {
       const resp = await axios.post(
-        "http://127.0.0.1:8000/article/",
+        `${import.meta.env.VITE_BACKEND_IP}/article/`,
         payload,
         options
       );
@@ -74,7 +74,7 @@ export const updateArticle = createAsyncThunk(
     };
     try {
       const resp = await axios.patch(
-        `http://127.0.0.1:8000/article/${payload.id}`,
+        `${import.meta.env.VITE_BACKEND_IP}/article/${payload.id}`,
         payload,
         options
       );

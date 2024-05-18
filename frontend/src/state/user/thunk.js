@@ -6,7 +6,7 @@ export const createUser = createAsyncThunk(
   async (payload, thunkApi) => {
     try {
       const res = await axios.post(
-        "http://127.0.0.1:8000/auth/users/",
+        `${import.meta.env.VITE_BACKEND_IP}/auth/users/`,
         payload,
         // options
       );
@@ -27,7 +27,7 @@ export const updateUser = createAsyncThunk(
     };
     try {
       const res = await axios.patch(
-        `http://127.0.0.1:8000/auth/users/${payload.id}/`,
+        `${import.meta.env.VITE_BACKEND_IP}/auth/users/${payload.id}/`,
         payload,
         options
       );
@@ -47,7 +47,7 @@ export const getUser = createAsyncThunk(
     };
     try {
       const res = await axios.get(
-        `http://127.0.0.1:8000/auth/users/${userId}/`,
+        `${import.meta.env.VITE_BACKEND_IP}/auth/users/${userId}/`,
         options
       );
       return res.data;
@@ -62,7 +62,7 @@ export const deleteUser = createAsyncThunk(
   async (userPassword, thunkApi) => {
     try {
       const res = await axios.delete(
-        "http://127.0.0.1:8000/auth/users/me/", 
+        `${import.meta.env.VITE_BACKEND_IP}/auth/users/me/`, 
       {
         data: { current_password: userPassword },
         headers: { Authorization: "JWT " + localStorage.getItem("access_token")},
